@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import hero1 from '../assets/hero1.png';
 import hero2 from '../assets/hero2.png';
 import hero3 from '../assets/hero3.png';
@@ -27,19 +27,66 @@ export default function Hero() {
             title: "Mobile App Development",
             desc: "Our app development platform helps you build and grow apps that engage users and drive business growth.",
         },
+    ];
+
+    const products = [
         {
-            title: "IoT App Development",
-            desc: "Developing solutions for objects with sensors, processing ability, software, and other connected technologies.",
+            img: posImg,
+            title: "ERP System",
+            desc: "A modern ERP platform with built-in POS features to manage billing, inventory, and daily business operations efficiently.",
         },
         {
-            title: "Web Development",
-            desc: "We develop fast-loading, modern, intuitive, and mobile-compatible websites that deliver exceptional user experiences.",
+            img: posImg,
+            title: "NearMe.lk",
+            desc: "All in One Place: A single platform that lets users discover local services, shops, and essential businesses quickly and conveniently.",
         },
         {
-            title: "Mobile App Development",
-            desc: "Our app development platform helps you build and grow apps that engage users and drive business growth.",
+            img: posImg,
+            title: "Customer Care Mobile App",
+            desc: "A user-friendly app that helps businesses handle customer inquiries, support tickets, and communication in one place.",
+        },
+        {
+            img: posImg,
+            title: "HR Management Tool",
+            desc: "A streamlined HR solution for managing employee attendance, payroll, and workflow activities with ease.",
+        },
+        {
+            img: posImg,
+            title: "IoT Solutions",
+            desc: "Smart IoT integrations that connect devices and sensors to provide automation, monitoring, and real-time data insights.",
+        },
+        {
+            img: posImg,
+            title: "Hire-IT People",
+            desc: "A dedicated hiring platform that connects companies with skilled IT professionals for faster and smarter recruitment.",
         },
     ];
+
+    const animateValue = (id, start, end, duration = 1500) => {
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        let startTimestamp = null;
+
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const value = Math.floor(progress * (end - start) + start);
+
+            element.textContent = value + (element.dataset.suffix || "");
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            }
+        };
+
+        requestAnimationFrame(step);
+    };
+
+    useEffect(() => {
+        animateValue("counter1", 0, 7);
+        animateValue("counter2", 0, 100);
+        animateValue("counter3", 0, 30);
+    }, []);
 
     return (
         <div className="w-full min-h-screen bg-white">
@@ -50,7 +97,13 @@ export default function Hero() {
                     className="h-10 sm:h-12 md:h-14 object-contain"
                 />
 
-                <button className="border-2 border-orange-300 rounded-full px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-2 flex items-center gap-2 text-sm sm:text-base md:text-lg bg-white text-gray-800 hover:bg-orange-300 hover:text-white transition font-normal">
+                <button
+                    onClick={() =>
+                        document
+                            .getElementById("contact")
+                            .scrollIntoView({ behavior: "smooth" })
+                    }
+                    className="border-2 border-orange-300 rounded-full px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-2 flex items-center gap-2 text-sm sm:text-base md:text-lg bg-white text-gray-800 hover:bg-orange-300 hover:text-white transition font-normal">
                     <span className="hidden sm:inline">contact us</span>
                     <span className="sm:hidden">contact</span>
                     <img
@@ -71,40 +124,71 @@ export default function Hero() {
 
                 <div className="absolute inset-0 bg-black/50 rounded-[60px] flex flex-col items-center justify-center text-white px-4 sm:px-6 text-center">
 
-                    <p className="text-base sm:text-lg md:text-xl font-bold text-white/90 mb-2 sm:mb-3">
+                    <p className="text-base sm:text-lg md:text-xl font-bold text-white/90 mb-2 sm:mb-3 fade-in fade-in-delay-1">
                         Innovate . Build. Develop . Support
                     </p>
 
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mt-2 sm:mt-3 text-white">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mt-2 sm:mt-3 text-white fade-in fade-in-delay-2">
                         We provide the expertise <br className="hidden sm:block" />
-                        <span className="sm:hidden"> </span>behind your growth.
+                        <span className="sm:hidden"></span>behind your growth.
                     </h1>
 
-                    <div className="mt-6 sm:mt-8 w-12 h-12 bg-white/50 rounded-full flex items-center justify-center hover:bg-white/80 transition cursor-pointer">
+                    <div
+                        className="mt-6 sm:mt-8 w-12 h-12 bg-white/50 rounded-full flex items-center justify-center hover:bg-white/80 transition cursor-pointer fade-in fade-in-delay-3"
+                    >
                         <img
                             src={downArrow}
                             alt="Down-Arrow"
                             className="w-6 h-6 sm:w-8 sm:h-8 opacity-100"
                         />
                     </div>
+
                 </div>
+
 
                 <div className="absolute -bottom-15 left-8 sm:left-10 bg-white rounded-full px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-4 md:py-5 flex justify-evenly items-center text-center gap-6 w-auto min-w-fit z-0">
-                    <div className="px-2 sm:px-2 md:px-2 lg:px-3">
-                        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-orange-500 leading-none">7+</h2>
-                        <p className="text-sm sm:text-base md:text-lg text-gray-800 mt-1 font-normal">years of experience</p>
+
+                    <div className="px-2 sm:px-2 md:px-2 lg:px-3 fade-in fade-in-delay-1">
+                        <h2
+                            id="counter1"
+                            data-suffix="+"
+                            className="counter text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-orange-500 leading-none"
+                        >
+                            0+
+                        </h2>
+                        <p className="fade-in fade-in-delay-1 text-sm sm:text-base md:text-lg text-gray-800 mt-1 font-normal">
+                            years of experience
+                        </p>
                     </div>
 
-                    <div className="px-2 sm:px-2 md:px-2 lg:px-3">
-                        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-orange-500 leading-none">100%</h2>
-                        <p className="text-sm sm:text-base md:text-lg text-gray-800 mt-1 font-normal">Client Satisfaction</p>
+                    <div className="px-2 sm:px-2 md:px-2 lg:px-3 fade-in fade-in-delay-2">
+                        <h2
+                            id="counter2"
+                            data-suffix="%"
+                            className="counter text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-orange-500 leading-none"
+                        >
+                            0%
+                        </h2>
+                        <p className="fade-in fade-in-delay-2 text-sm sm:text-base md:text-lg text-gray-800 mt-1 font-normal">
+                            Client Satisfaction
+                        </p>
                     </div>
 
-                    <div className="px-2 sm:px-2 md:px-2 lg:px-3">
-                        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-orange-500 leading-none">30+</h2>
-                        <p className="text-sm sm:text-base md:text-lg text-gray-800 mt-1 font-normal">projects</p>
+                    <div className="px-2 sm:px-2 md:px-2 lg:px-3 fade-in fade-in-delay-3">
+                        <h2
+                            id="counter3"
+                            data-suffix="+"
+                            className="counter text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-orange-500 leading-none"
+                        >
+                            0+
+                        </h2>
+                        <p className="fade-in fade-in-delay-3 text-sm sm:text-base md:text-lg text-gray-800 mt-1 font-normal">
+                            projects
+                        </p>
                     </div>
+
                 </div>
+
             </section>
             <div className="h-10 sm:h-14 md:h-20 lg:h-28"></div>
             <section className="w-full flex md:flex-row items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20">
@@ -119,7 +203,13 @@ export default function Hero() {
                         Technological Solutions
                     </h3>
 
-                    <button className="mt-4 bg-orange-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-orange-600 transition flex items-center gap-2 w-fit text-sm sm:text-base">
+                    <button
+                        onClick={() =>
+                            document
+                                .getElementById("contact")
+                                .scrollIntoView({ behavior: "smooth" })
+                        }
+                        className="mt-4 bg-orange-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-orange-600 transition flex items-center gap-2 w-fit text-sm sm:text-base">
                         Lets Talk
                         <img src={openArrow} alt="open" className="w-6 h-6" />
                     </button>
@@ -173,15 +263,15 @@ export default function Hero() {
                         {cards.map((card, index) => (
                             <div
                                 key={index}
-                                className="min-w-[280px] sm:min-w-[300px] scroll-snap-align-center bg-gradient-to-b from-[#1B2435] to-[#0D1422] rounded-lg sm:rounded-xl p-4 sm:p-6 border border-[#1E2A3D] shadow-md relative"
+                                className="min-w-[280px] sm:min-w-[300px] min-h-[100px] sm:min-h-[280px] scroll-snap-align-center bg-gradient-to-b from-[#1B2435] to-[#0D1422] rounded-lg sm:rounded-xl p-4 sm:p-6 border border-[#1E2A3D] shadow-md relative"
                                 style={{
                                     borderImage: "linear-gradient(to bottom right, #ff7a00, #00c3ff) 1",
                                 }}
                             >
-                                <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-orange-500 absolute left-3 sm:left-4 top-3 sm:top-4"></span>
+                                <span className="w-3 h-3 sm:w-5 sm:h-5 rounded-full bg-orange-500 absolute left-3 sm:left-4 top-3 sm:top-4"></span>
 
-                                <h3 className="text-white font-bold text-lg sm:text-xl mt-3 sm:mt-4">{card.title}</h3>
-                                <p className="text-gray-300 mt-2 text-xs sm:text-sm leading-relaxed">{card.desc}</p>
+                                <h3 className="text-white font-bold text-xl sm:text-3xl mt-3 sm:mt-[50px]">{card.title}</h3>
+                                <p className="text-gray-300 mt-2 text-lg sm:text-xl leading-relaxed">{card.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -209,33 +299,44 @@ export default function Hero() {
                         sales analytics, and multi-payment integration
                     </p>
 
-                    <div className="mt-8 sm:mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 md:gap-x-12 gap-y-12 sm:gap-y-16 md:gap-y-20">
+                    <div className="mt-8 sm:mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 
+                gap-x-6 sm:gap-x-8 md:gap-x-12 
+                gap-y-12 sm:gap-y-16 md:gap-y-20">
 
-                        {[1, 2, 3, 4, 5, 6].map((item) => (
-                            <div key={item} className="border-r-0 sm:border-r border-gray-300 sm:pr-6 last:border-none pb-6 sm:pb-0 border-b sm:border-b-0 last:border-b-0">
-
+                        {products.map((item, index) => (
+                            <div
+                                key={index}
+                                className="border-r-0 sm:border-r border-gray-300 sm:pr-6 
+                       last:border-none pb-6 sm:pb-0 
+                       border-b sm:border-b-0 last:border-b-0"
+                            >
                                 <img
-                                    src={posImg}
-                                    alt="POS System"
-                                    className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 object-contain mx-auto sm:mx-0"
+                                    src={item.img}
+                                    alt={item.title}
+                                    className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 
+                           object-contain mx-auto sm:mx-0"
                                 />
 
-                                <h3 className="text-xl sm:text-2xl font-semibold text-[#111827] mt-4 sm:mt-6 text-center sm:text-left">
-                                    Hybrid POS system
+                                <h3 className="text-xl sm:text-2xl font-semibold text-[#111827] 
+                           mt-4 sm:mt-6 text-center sm:text-left">
+                                    {item.title}
                                 </h3>
 
-                                <p className="text-gray-600 text-sm leading-relaxed mt-3 text-center sm:text-left">
-                                    Enterprise-grade point-of-sale solutions featuring inventory
-                                    management, sales analytics, and multi-payment integration
+                                <p className="text-gray-600 text-sm leading-relaxed 
+                          mt-3 text-center sm:text-left">
+                                    {item.desc}
                                 </p>
 
-                                <button className="text-gray-500 text-sm mt-3 hover:text-orange-500 transition block mx-auto sm:mx-0">
+                                <button className="text-gray-500 text-sm mt-3 
+                               hover:text-orange-500 transition 
+                               block mx-auto sm:mx-0">
                                     View more
                                 </button>
                             </div>
                         ))}
 
                     </div>
+
 
                 </div>
             </section>
@@ -331,13 +432,13 @@ export default function Hero() {
 
                             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
                                 <img
-                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"
+                                    src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?q=80&w=1506&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                     alt="Client"
                                     className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 mx-auto sm:mx-0"
                                 />
                                 <div className="flex-1">
                                     <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-2">
-                                        Working with Toursurv has been a game changer. Their technical expertise, communication, and ability to customize solutions for our needs we
+                                        Working with Toursurv has been a game changer. Their technical expertise, clear communication, and ability to tailor solutions to our needs exceeded every expectation.
                                     </p>
                                     <p className="text-gray-500 text-xs sm:text-sm mb-2">-Project manager-</p>
 
@@ -359,13 +460,13 @@ export default function Hero() {
 
                             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
                                 <img
-                                    src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+                                    src="https://images.unsplash.com/photo-1564490215983-296e5f56b623?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                     alt="Client"
                                     className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 mx-auto sm:mx-0"
                                 />
                                 <div className="flex-1">
                                     <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-2">
-                                        Working with Toursurv has been a game changer. Their technical expertise, communication, and ability to customize solutions for our needs we
+                                        Toursurv transformed our workflow with their innovative approach and reliable support. Their team understood our challenges and delivered exactly what we needed.
                                     </p>
                                     <p className="text-gray-500 text-xs sm:text-sm mb-2">-Project manager-</p>
 
@@ -393,7 +494,7 @@ export default function Hero() {
                                 />
                                 <div className="flex-1">
                                     <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-2">
-                                        Working with Toursurv has been a game changer. Their technical expertise, communication, and ability to customize solutions for our needs we
+                                        We’ve partnered with many tech companies, but Toursurv stands out. Their professionalism, fast delivery, and commitment to quality made the entire process effortless.
                                     </p>
                                     <p className="text-gray-500 text-xs sm:text-sm mb-2">-Project manager-</p>
 
@@ -431,7 +532,13 @@ export default function Hero() {
                             Want To Grow Your Business?
                         </h3>
 
-                        <button className="bg-orange-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-orange-600 transition flex items-center gap-2 w-full sm:w-auto justify-center">
+                        <button
+                            onClick={() =>
+                                document
+                                    .getElementById("contact")
+                                    .scrollIntoView({ behavior: "smooth" })
+                            }
+                            className="bg-orange-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-orange-600 transition flex items-center gap-2 w-full sm:w-auto justify-center">
                             Lets Talk
                             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -443,7 +550,9 @@ export default function Hero() {
             </section>
 
 
-            <section className="relative bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-16">
+            <section
+                id="contact"
+                className="relative bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-16">
                 <div className="max-w-[1400px] mx-auto">
                     <div className="text-center mb-8 sm:mb-10 md:mb-12">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#19202C]">GET IN TOUCH</h2>
