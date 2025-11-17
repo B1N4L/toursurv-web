@@ -50,7 +50,7 @@ export default function Footer() {
 
                 <div className="border-t border-white/20 my-8"></div>
 
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex flex-col md:flex-col items-center justify-between gap-4">
                     <p className="text-sm md:text-base text-gray-300">
                         © 2025 Toursurv (Pvt) Ltd. All rights reserved.
                     </p>
