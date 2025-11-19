@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import hero1 from '../assets/hero1.png';
 import hero2 from '../assets/hero2.png';
 import hero3 from '../assets/hero3.png';
@@ -14,6 +14,12 @@ import Footer from '../components/Footer';
 
 export default function Hero() {
     const scrollRef = useRef(null);
+    const [activeIndex, setActiveIndex] = useState(1);
+
+    const handleClick = (index) => {
+        setActiveIndex(index);
+    };
+
     const cards = [
         {
             title: "IoT App Development",
@@ -224,7 +230,8 @@ export default function Hero() {
                     />
                 </div>
             </section>
-            <section className="relative w-full flex justify-center mt-16 sm:mt-24 md:mt-32 z-20 px-4 sm:px-6">
+
+            <section className="relative w-full flex justify-center -mb-24 sm:-mb-28 md:-mb-32 z-40 px-4 sm:px-6">
                 <div className="bg-white shadow-xl rounded-2xl p-8 md:p-12 max-w-6xl w-full text-center md:text-left relative">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-black">
                         Here is What We Do Our Best
@@ -244,57 +251,88 @@ export default function Hero() {
                 </div>
             </section>
 
-            <section className="w-full bg-[#0D1422] py-12 sm:py-16 md:py-24 mt-[-40px] sm:mt-[-60px] md:mt-[-80px] pt-20 sm:pt-28 md:pt-40">
+            <section className="w-full h-auto min-h-[28rem] sm:min-h-[32rem] md:min-h-[36rem] bg-[#0D1422] flex justify-center items-center overflow-hidden  pt-40 sm:pt-48 md:pt-52 pb-24 sm:pb-28 md:pb-32">
+                <div className="relative w-full max-w-5xl flex justify-center items-center mr-52">
+                    {cards.map((card, index) => {
+                        const offset = index - activeIndex;
 
-                <div className="relative px-4 sm:px-6">
+                        let scale = "scale-90";
+                        let translateY = "translate-y-4";
+                        let rotate = "rotate-0";
+                        let zIndex = "z-10";
+                        let opacity = "opacity-70";
 
-                    <button
-                        onClick={() => scrollRef.current.scrollBy({ left: -350, behavior: "smooth" })}
-                        className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 bg-[#111] text-white p-2 sm:p-3 rounded-full shadow-md z-20"
-                    >
-                        ❮
-                    </button>
+                        if (offset === 0) {
+                            scale = "scale-110";
+                            translateY = "-translate-y-6";
+                            rotate = "rotate-0";
+                            zIndex = "z-20";
+                            opacity = "opacity-100";
+                        } else if (offset === -1) {
+                            scale = "scale-90";
+                            translateY = "translate-y-4";
+                            rotate = "-rotate-6";
+                            zIndex = "z-10";
+                        } else if (offset === 1) {
+                            scale = "scale-90";
+                            translateY = "translate-y-4";
+                            rotate = "rotate-6";
+                            zIndex = "z-10";
+                        } else {
+                            scale = "scale-75";
+                            translateY = "translate-y-6";
+                            rotate = "rotate-0";
+                            zIndex = "z-0";
+                            opacity = "opacity-0";
+                        }
 
-                    <div
-                        ref={scrollRef}
-                        className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar px-4 sm:px-6 md:px-10"
-                        style={{ scrollSnapType: "x mandatory" }}
-                    >
-                        {cards.map((card, index) => (
+                        return (
                             <div
                                 key={index}
-                                className="min-w-[280px] sm:min-w-[300px] min-h-[100px] sm:min-h-[280px] scroll-snap-align-center bg-gradient-to-b from-[#1B2435] to-[#0D1422] rounded-lg sm:rounded-xl p-4 sm:p-6 border border-[#1E2A3D] shadow-md relative"
+                                onClick={() => handleClick(index)}
+                                className={`absolute transition-all duration-500 
+                                    ${scale} ${translateY} ${rotate} ${zIndex} ${opacity} 
+                                    bg-gradient-to-b from-[#1B2435] to-[#0D1422] 
+                                    border border-[#1E2A3D] 
+                                    shadow-md rounded-xl p-6 cursor-pointer w-64 sm:w-72 `}
                                 style={{
-                                    borderImage: "linear-gradient(to bottom right, #ff7a00, #00c3ff) 1",
+                                    left: "50%",
+                                    transform: `translateX(${offset * 500}px)`,
+                                    transformOrigin: "center center",
                                 }}
                             >
-                                <span className="w-3 h-3 sm:w-5 sm:h-5 rounded-full bg-orange-500 absolute left-3 sm:left-4 top-3 sm:top-4"></span>
-
-                                <h3 className="text-white font-bold text-xl sm:text-3xl mt-3 sm:mt-[50px]">{card.title}</h3>
-                                <p className="text-gray-300 mt-2 text-lg sm:text-xl leading-relaxed">{card.desc}</p>
+                                <span className="w-4 h-4 rounded-full bg-orange-500 absolute top-4 left-4"></span>
+                                <h3 className="text-white font-bold text-xl mt-10">{card.title}</h3>
+                                <p className="text-gray-300 mt-2 text-lg leading-relaxed">{card.desc}</p>
                             </div>
-                        ))}
-                    </div>
-
-                    <button
-                        onClick={() => scrollRef.current.scrollBy({ left: 350, behavior: "smooth" })}
-                        className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 bg-[#111] text-white p-2 sm:p-3 rounded-full shadow-md z-20"
-                    >
-                        ❯
-                    </button>
-
+                        );
+                    })}
                 </div>
-
             </section>
-            <section className="relative w-full bg-white pt-32 sm:pt-40 md:pt-48 lg:pt-56 pb-16 sm:pb-24 md:pb-32 overflow-hidden">
+            <section className="relative w-full h-40 bg-[#0D1422] overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full bg-white">
+                    <svg
+                        viewBox="0 0 1440 200"
+                        className="w-full h-full"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            d="M0,200 C360,20 1080,20 1440,200 L1440,0 L0,0 Z"
+                            fill="#0D1422"
+                        />
+                    </svg>
+                </div>
+            </section>
+
+            <section className="relative w-full bg-white pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-16 sm:pb-24 md:pb-32 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-32 sm:h-40 md:h-48 lg:h-64 bg-white rounded-t-[80%]"></div> {/**bg-[#0D1422] */}
                 <div className="bg-white relative w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
 
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111827]">
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111827]">
                         <span className="text-orange-500">Trusted</span> Products
                     </h2>
 
-                    <p className="text-gray-600 mt-3 max-w-2xl text-sm sm:text-base">
+                    <p className="text-black mt-3 max-w-2xl text-base sm:text-lg">
                         Enterprise-grade point-of-sale solutions featuring inventory management,
                         sales analytics, and multi-payment integration
                     </p>
@@ -306,24 +344,19 @@ export default function Hero() {
                         {products.map((item, index) => (
                             <div
                                 key={index}
-                                className="border-r-0 sm:border-r border-gray-300 sm:pr-6 
-                       last:border-none pb-6 sm:pb-0 
-                       border-b sm:border-b-0 last:border-b-0"
+                                className="border-r-0 sm:border-r border-gray-300 sm:pr-6 last:border-none pb-6 sm:pb-0 border-b sm:border-b-0 last:border-b-0"
                             >
                                 <img
                                     src={item.img}
                                     alt={item.title}
-                                    className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 
-                           object-contain mx-auto sm:mx-0"
+                                    className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 object-contain mx-auto sm:mx-0"
                                 />
 
-                                <h3 className="text-xl sm:text-2xl font-semibold text-[#111827] 
-                           mt-4 sm:mt-6 text-center sm:text-left">
+                                <h3 className="text-xl sm:text-2xl font-semibold text-[#111827] mt-4 sm:mt-6 text-center sm:text-left">
                                     {item.title}
                                 </h3>
 
-                                <p className="text-gray-600 text-sm leading-relaxed 
-                          mt-3 text-center sm:text-left">
+                                <p className="text-gray-600 text-sm leading-relaxed mt-3 text-center sm:text-left">
                                     {item.desc}
                                 </p>
 
@@ -341,7 +374,7 @@ export default function Hero() {
                 </div>
             </section>
             <section className="bg-white w-full py-10">
-                <h2 className="text-center text-3xl font-bold text-[#0f233c] mb-4">
+                <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-[#0f233c] mb-4">
                     Our Tech Stack
                 </h2>
 
@@ -359,14 +392,14 @@ export default function Hero() {
                     </div>
                 </div>
 
-                <p className="text-center text-gray-600 mt-6 px-6 max-w-3xl mx-auto">
+                <p className="text-center text-gray-600 mt-6 px-6 max-w-3xl mx-auto text-base sm:text-lg">
                     We build powerful, scalable solutions using modern technologies like Python,
                     PHP, Laravel, HTML5, Java, Angular, and Adobe tools ensuring performance,
                     security, and innovation in every project.
                 </p>
             </section>
 
-            <section className="relative bg-white px-4 sm:px-6 md:px-12 lg:px-16 py-12 sm:py-16 md:py-20 lg:py-28 overflow-hidden">
+            <section className="relative bg-white px-4 sm:px-6 md:px-12 lg:px-16 py-6 sm:py-8 md:py-10 lg:py-12 overflow-hidden">
 
                 <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-10 md:gap-12">
 
@@ -376,7 +409,7 @@ export default function Hero() {
                     </div>
 
                     <div className="flex-1 text-center md:text-left w-full">
-                        <h2 className="text-2xl sm:text-3xl md:text-[36px] lg:text-[42px] font-extrabold text-[#444] leading-snug">
+                        <h2 className="text-2xl sm:text-3xl md:text-[36px] lg:text-[42px] font-extrabold text-gray-300 leading-snug">
                             <span className="text-orange-500 mr-2">❝❝❝</span>
                             Proven Global Excellence
                         </h2>
@@ -393,10 +426,10 @@ export default function Hero() {
 
                 <div className="absolute left-1/2 bottom-0 w-[200%] -translate-x-1/2 pointer-events-none hidden md:block">
 
-                    <img src="/images/ribbon-1.png"
+                    <img src="/assets/ribbon-1.png"
                         className="absolute bottom-10 w-full rotate-[-8deg]" alt="" />
 
-                    <img src="/images/ribbon-2.png"
+                    <img src="/assets/ribbon-2.png"
                         className="absolute -bottom-2 w-full rotate-[5deg] opacity-95" alt="" />
                 </div>
 
@@ -406,7 +439,7 @@ export default function Hero() {
                 <div className="relative mx-auto overflow-hidden">
 
                     <div className="flex items-start justify-start mb-8 sm:mb-10 md:mb-12 px-4 pt-12 gap-10">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#19202C] mb-3">TESTIMONIALS</h2>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#19202C] mb-3">TESTIMONIALS</h2>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#19202C] mb-3">------------</h2>
                     </div>
 
