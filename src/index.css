@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @keyframes marquee {
-    0% {
-        transform: translateX(100%);
-    }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
-    100% {
-        transform: translateX(-100%);
-    }
+.marquee {
+  display: flex;
+  animation: marquee 35s linear infinite;
 }
 
 .fade-in {
@@ -42,4 +42,12 @@
 .counter {
     opacity: 0;
     animation: fadeIn 0.8s ease-out forwards;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

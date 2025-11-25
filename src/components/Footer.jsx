@@ -1,8 +1,8 @@
 export default function Footer() {
     return (
-        <footer className="bg-[#0D1422] text-white py-12 md:py-16 px-6 md:px-16">
+        <footer className="bg-[#1E293B] text-white py-12 md:py-16 px-6 md:px-16">
             <div className="max-w-[1400px] mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 text-center md:text-left">
                     <div>
                         <h3 className="text-lg md:text-xl font-bold uppercase mb-4">
                             TOURSURV (PVT) LTD

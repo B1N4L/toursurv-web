@@ -1,16 +1,18 @@
 import { useState } from 'react'
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import Hero from './pages/Hero.jsx'
+import WhatWeDo from './pages/WhatWeDo.jsx'
 import './App.css'
 
 function App() {
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
+        <Route path="/whatwedo" element={<WhatWeDo />} />
         <Route path="/" element={<Hero />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 export default App

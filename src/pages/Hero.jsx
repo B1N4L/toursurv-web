@@ -2,12 +2,26 @@ import { useRef, useEffect, useState } from "react";
 import hero1 from '../assets/hero1.png';
 import hero2 from '../assets/hero2.png';
 import hero3 from '../assets/hero3.png';
-import logoFull from '../assets/logo-full.png';
+import apsmarks1 from '../assets/apsmarks1.png';
+import apsmarks2 from '../assets/apsmarks2.png';
+import logoInline from '../assets/logo inline.svg';
 import downArrow from '../assets/down-arrow.png';
 import rightArrow from '../assets/left-arrow.png';
 import openArrow from '../assets/open-arrow.png';
 import posImg from '../assets/posImg.png';
-import techstack from '../assets/techStack.png';
+import hireImg from '../assets/hireImg.png';
+import iotImg from '../assets/iotImg.png';
+import nearbyImg from '../assets/nearbyImg.png';
+import customerImg from '../assets/customerImg.png';
+import hrImg from '../assets/hrImg.png';
+import heromq1 from '../assets/heromq1.png';
+import heromq2 from '../assets/heromq2.png';
+import heromq3 from '../assets/heromq3.png';
+import heromq4 from '../assets/heromq4.png';
+import heromq5 from '../assets/heromq5.png';
+import heromq6 from '../assets/heromq6.png';
+import heromq7 from '../assets/heromq7.png';
+import heromq8 from '../assets/heromq8.png';
 import quote1 from '../assets/quote1.png';
 import Footer from '../components/Footer';
 
@@ -15,6 +29,7 @@ import Footer from '../components/Footer';
 export default function Hero() {
     const scrollRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(1);
+    const [showFirstRev, setShowFirstRev] = useState(true);
 
     const handleClick = (index) => {
         setActiveIndex(index);
@@ -42,31 +57,69 @@ export default function Hero() {
             desc: "A modern ERP platform with built-in POS features to manage billing, inventory, and daily business operations efficiently.",
         },
         {
-            img: posImg,
-            title: "NearMe.lk",
+            img: nearbyImg,
+            title: "NearBy.lk",
             desc: "All in One Place: A single platform that lets users discover local services, shops, and essential businesses quickly and conveniently.",
         },
         {
-            img: posImg,
+            img: customerImg,
             title: "Customer Care Mobile App",
             desc: "A user-friendly app that helps businesses handle customer inquiries, support tickets, and communication in one place.",
         },
         {
-            img: posImg,
+            img: hrImg,
             title: "HR Management Tool",
             desc: "A streamlined HR solution for managing employee attendance, payroll, and workflow activities with ease.",
         },
         {
-            img: posImg,
+            img: iotImg,
             title: "IoT Solutions",
             desc: "Smart IoT integrations that connect devices and sensors to provide automation, monitoring, and real-time data insights.",
         },
         {
-            img: posImg,
+            img: hireImg,
             title: "Hire-IT People",
             desc: "A dedicated hiring platform that connects companies with skilled IT professionals for faster and smarter recruitment.",
         },
     ];
+
+    const reviewsSet1 = [
+        {
+            text: "Working with Toursurv has been a game changer. Their technical expertise, clear communication, and ability to tailor solutions exceeded expectations.",
+            person: "Project manager",
+            img: "https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?q=80&w=1506&auto=format&fit=crop"
+        },
+        {
+            text: "Toursurv transformed our workflow with innovative approaches and reliable support. They delivered exactly what we needed.",
+            person: "Tech Lead",
+            img: "https://images.unsplash.com/photo-1564490215983-296e5f56b623?q=80&w=687&auto=format&fit=crop"
+        },
+        {
+            text: "We’ve partnered with many tech companies, but Toursurv stands out. Their professionalism and fast delivery made everything effortless.",
+            person: "CEO",
+            img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+        }
+    ];
+
+    const reviewsSet2 = [
+        {
+            text: "Exceptional service and outstanding communication. Toursurv understood our goals and exceeded every one of them.",
+            person: "Operations Lead",
+            img: "https://images.unsplash.com/photo-1589571894960-20bbe2828d0a?w=100&h=100&fit=crop&crop=face"
+        },
+        {
+            text: "Reliable, efficient, and highly skilled. Their solutions helped us scale faster than expected.",
+            person: "Project manager",
+            img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&fit=crop"
+        },
+        {
+            text: "Toursurv’s dedication to quality and customer satisfaction is unmatched. Highly recommended!",
+            person: "CEO",
+            img: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=100&fit=crop"
+        }
+    ];
+
+    const activeReviews = showFirstRev ? reviewsSet1 : reviewsSet2;
 
     const animateValue = (id, start, end, duration = 1500) => {
         const element = document.getElementById(id);
@@ -94,11 +147,55 @@ export default function Hero() {
         animateValue("counter3", 0, 30);
     }, []);
 
+    useEffect(() => {
+        const handleWheel = (e) => {
+            if (e.deltaY > 0) {
+                setActiveIndex((prev) => (prev + 1) % cards.length);
+            } else {
+                setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
+            }
+        };
+
+        window.addEventListener("wheel", handleWheel);
+
+        return () => window.removeEventListener("wheel", handleWheel);
+    }, [cards.length]);
+
+
+    useEffect(() => {
+        let startX = 0;
+
+        const onTouchStart = (e) => {
+            startX = e.touches[0].clientX;
+        };
+
+        const onTouchEnd = (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    setActiveIndex((prev) => (prev + 1) % cards.length);
+                } else {
+                    setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
+                }
+            }
+        };
+
+        window.addEventListener("touchstart", onTouchStart);
+        window.addEventListener("touchend", onTouchEnd);
+
+        return () => {
+            window.removeEventListener("touchstart", onTouchStart);
+            window.removeEventListener("touchend", onTouchEnd);
+        };
+    }, [cards.length]);
+
     return (
         <div className="w-full min-h-screen bg-white">
             <header className="w-full flex items-center justify-between px-4 sm:px-6 md:px-36 py-4 sm:py-6 pb-8 sm:pb-12">
                 <img
-                    src={logoFull}
+                    src={logoInline}
                     alt="Logo"
                     className="h-10 sm:h-12 md:h-14 object-contain"
                 />
@@ -122,37 +219,40 @@ export default function Hero() {
 
             <section className="relative w-[95%] sm:w-[98%] mx-auto rounded-[60px] mt-2 sm:mt-4">
 
-                <img
-                    src={hero1}
-                    alt="Hero"
-                    className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh]"
-                />
-
-                <div className="absolute inset-0 bg-black/50 rounded-[60px] flex flex-col items-center justify-center text-white px-4 sm:px-6 text-center">
-
-                    <p className="text-base sm:text-lg md:text-xl font-bold text-white/90 mb-2 sm:mb-3 fade-in fade-in-delay-1">
-                        Innovate . Build. Develop . Support
-                    </p>
-
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mt-2 sm:mt-3 text-white fade-in fade-in-delay-2">
-                        We provide the expertise <br className="hidden sm:block" />
-                        <span className="sm:hidden"></span>behind your growth.
-                    </h1>
-
+                <div className="relative w-full">
+                    <img
+                        src={hero1}
+                        alt="Hero"
+                        className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] object-cover rounded-[60px]" />
                     <div
-                        className="mt-6 sm:mt-8 w-12 h-12 bg-white/50 rounded-full flex items-center justify-center hover:bg-white/80 transition cursor-pointer fade-in fade-in-delay-3"
-                    >
-                        <img
-                            src={downArrow}
-                            alt="Down-Arrow"
-                            className="w-6 h-6 sm:w-8 sm:h-8 opacity-100"
-                        />
-                    </div>
+                        className="absolute inset-0 bg-black/50 rounded-[60px] flex flex-col items-center justify-center text-white px-4 sm:px-6 text-center">
+                        <p className="text-base sm:text-lg md:text-xl font-bold text-white/90 mb-2 sm:mb-3 fade-in fade-in-delay-1">
+                            Innovate . Build. Develop . Support
+                        </p>
 
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mt-2 sm:mt-3 text-white fade-in fade-in-delay-2">
+                            We provide the expertise <br className="hidden sm:block" />
+                            <span className="sm:hidden"></span>behind your growth.
+                        </h1>
+
+                        <div
+                            onClick={() => {
+                                const section = document.getElementById("whorwe");
+                                section?.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="mt-6 sm:mt-8 w-12 h-12 bg-white/50 rounded-full flex items-center justify-center hover:bg-white/80 transition cursor-pointer fade-in fade-in-delay-3"
+                        >
+                            <img
+                                src={downArrow}
+                                alt="Down-Arrow"
+                                className="w-6 h-6 sm:w-8 sm:h-8 opacity-100"
+                            />
+                        </div>
+                    </div>
                 </div>
 
 
-                <div className="absolute -bottom-15 left-8 sm:left-10 bg-white rounded-full px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-4 md:py-5 flex justify-evenly items-center text-center gap-6 w-auto min-w-fit z-0">
+                <div className="absolute -bottom-15 left-1/2 -translate-x-1/2 sm:left-10 sm:translate-x-0 bg-white rounded-full px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-4 md:py-5 flex justify-evenly items-center text-center gap-6 w-auto min-w-fit z-0">
 
                     <div className="px-2 sm:px-2 md:px-2 lg:px-3 fade-in fade-in-delay-1">
                         <h2
@@ -197,7 +297,9 @@ export default function Hero() {
 
             </section>
             <div className="h-10 sm:h-14 md:h-20 lg:h-28"></div>
-            <section className="w-full flex md:flex-row items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20">
+            <section
+                id="whorwe"
+                className="w-full flex md:flex-row items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20">
 
                 <div className="w-full md:w-1/2 space-y-4 sm:space-y-6 flex flex-col items-start justify-start">
 
@@ -251,7 +353,7 @@ export default function Hero() {
                 </div>
             </section>
 
-            <section className="w-full h-auto min-h-[28rem] sm:min-h-[32rem] md:min-h-[36rem] bg-[#0D1422] flex justify-center items-center overflow-hidden  pt-40 sm:pt-48 md:pt-52 pb-24 sm:pb-28 md:pb-32">
+            <section className="w-full h-auto min-h-[28rem] sm:min-h-[32rem] md:min-h-[36rem] bg-[#0D1422] flex justify-center items-center overflow-hidden no-scrollbar pt-60 sm:pt-60 md:pt-52 lg:pt-48 pb-24 sm:pb-28 md:pb-32">
                 <div className="relative w-full max-w-5xl flex justify-center items-center mr-52">
                     {cards.map((card, index) => {
                         const offset = index - activeIndex;
@@ -311,18 +413,43 @@ export default function Hero() {
             </section>
             <section className="relative w-full h-40 bg-[#0D1422] overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full bg-white">
+
                     <svg
                         viewBox="0 0 1440 200"
-                        className="w-full h-full"
+                        className="w-full h-full block sm:hidden"
                         preserveAspectRatio="none"
                     >
                         <path
-                            d="M0,200 C360,20 1080,20 1440,200 L1440,0 L0,0 Z"
+                            d="M0,200 C480,80 960,80 1440,200 L1440,0 L0,0 Z"
                             fill="#0D1422"
                         />
                     </svg>
+
+                    <svg
+                        viewBox="0 0 1440 200"
+                        className="w-full h-full hidden sm:block md:hidden"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            d="M0,200 C360,60 1080,60 1440,200 L1440,0 L0,0 Z"
+                            fill="#0D1422"
+                        />
+                    </svg>
+
+                    <svg
+                        viewBox="0 0 1440 200"
+                        className="w-full h-full hidden md:block"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            d="M0,200 C280,20 1160,20 1440,200 L1440,0 L0,0 Z"
+                            fill="#0D1422"
+                        />
+                    </svg>
+
                 </div>
             </section>
+
 
             <section className="relative w-full bg-white pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-16 sm:pb-24 md:pb-32 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-32 sm:h-40 md:h-48 lg:h-64 bg-white rounded-t-[80%]"></div> {/**bg-[#0D1422] */}
@@ -379,16 +506,17 @@ export default function Hero() {
                 </h2>
 
                 <div className="bg-[#0f233c] w-full overflow-hidden py-6 sm:py-8 md:py-[30px]">
-                    <div
-                        className="inline-flex items-center gap-10"
-                        style={{
-                            animation: "marquee 35s linear infinite"
-                        }}
-                    >
-                        <img src={techstack} className="h-16 sm:h-20 md:h-24 lg:h-[120px]" />
-                        <img src={techstack} className="h-16 sm:h-20 md:h-24 lg:h-[120px]" />
-                        <img src={techstack} className="h-16 sm:h-20 md:h-24 lg:h-[120px]" />
-                        <img src={techstack} className="h-16 sm:h-20 md:h-24 lg:h-[120px]" />
+                    <div className="marquee flex gap-10">
+                        {[heromq1, heromq2, heromq3, heromq4, heromq5, heromq6, heromq7, heromq8,
+                            heromq1, heromq2, heromq3, heromq4, heromq5, heromq6, heromq7, heromq8
+                        ].map((img, idx) => (
+                            <img
+                                key={idx}
+                                src={img}
+                                alt={`tech-${idx}`}
+                                className="h-16 sm:h-20 md:h-24 lg:h-[120px] flex-shrink-0"
+                            />
+                        ))}
                     </div>
                 </div>
 
@@ -409,18 +537,26 @@ export default function Hero() {
                     </div>
 
                     <div className="flex-1 text-center md:text-left w-full">
-                        <h2 className="text-2xl sm:text-3xl md:text-[36px] lg:text-[42px] font-extrabold text-gray-300 leading-snug">
-                            <span className="text-orange-500 mr-2">❝❝❝</span>
+                        <h2 className="text-2xl sm:text-3xl md:text-[36px] lg:text-[42px] font-extrabold text-gray-300 leading-snug flex items-center justify-center md:justify-start">
+
+                            {/* Quote image */}
+                            <img
+                                src={apsmarks1}
+                                alt="quote"
+                                className="w-10 sm:w-12 md:w-14 lg:w-16 mr-2"
+                            />
+
                             Proven Global Excellence
                         </h2>
 
                         <p className="mt-3 text-base sm:text-lg md:text-[20px] lg:text-[21px] font-semibold leading-relaxed text-black">
                             With 30+ successful projects across Globe
-                            <span className="text-orange-500 font-bold"> Toursurv</span>
+                            <span className="text-orange-500 font-bold"> Toursurv </span>
                             continues to earn the trust of clients worldwide delivering
                             innovation, reliability, and results that stand out.
                         </p>
                     </div>
+
 
                 </div>
 
@@ -438,123 +574,91 @@ export default function Hero() {
             <section className="relative sm:pt-16 md:pt-24">
                 <div className="relative mx-auto overflow-hidden">
 
-                    <div className="flex items-start justify-start mb-8 sm:mb-10 md:mb-12 px-4 pt-12 gap-10">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#19202C] mb-3">TESTIMONIALS</h2>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#19202C] mb-3">------------</h2>
+                    <div className="flex items-start justify-start mb-8 sm:mb-10 md:mb-12 px-4 pt-12 gap-6">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#19202C] mb-3">TESTIMONIALS</h2>
+                        <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#19202C] mb-3">------------</h2>
                     </div>
 
                     <div className="bg-orange-500 px-4 sm:px-6 md:px-12 lg:px-16 flex flex-col md:flex-row">
 
                         <div className="bg-orange-500 flex-1 flex items-center justify-center p-8 sm:p-10 md:p-12 lg:p-16">
                             <div className="text-white text-center md:text-left">
-                                <div className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold leading-none mb-2 sm:mb-4">
-                                    <span className="block">"</span>
+
+                                <div className="mb-2 sm:mb-4 flex justify-center md:justify-start">
+                                    <img
+                                        src={apsmarks2}
+                                        alt="quote"
+                                        className="w-12 sm:w-16 md:w-20 lg:w-24"
+                                    />
                                 </div>
+
                                 <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
                                     what our<br />
                                     clients<br />
                                     say
                                 </h3>
-                                <div className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold leading-none mt-2 sm:mt-4 text-right">
-                                    <span className="block">"</span>
+
+                                <div className="mt-2 sm:mt-4 flex justify-center md:justify-end">
+                                    <img
+                                        src={apsmarks2}
+                                        alt="quote"
+                                        className="w-12 sm:w-16 md:w-20 lg:w-24 transform scale-x-[-1]"
+                                    />
                                 </div>
+
                             </div>
                         </div>
 
                         <div className="bg-white flex-1 p-6 sm:p-8 md:p-10 lg:p-12 space-y-6 sm:space-y-8">
 
-                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
-                                <img
-                                    src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?q=80&w=1506&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    alt="Client"
-                                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 mx-auto sm:mx-0"
-                                />
-                                <div className="flex-1">
-                                    <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-2">
-                                        Working with Toursurv has been a game changer. Their technical expertise, clear communication, and ability to tailor solutions to our needs exceeded every expectation.
-                                    </p>
-                                    <p className="text-gray-500 text-xs sm:text-sm mb-2">-Project manager-</p>
+                            {activeReviews.map((review, index) => (
+                                <div key={index} className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
+                                    <img
+                                        src={review.img}
+                                        alt="Client"
+                                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 mx-auto sm:mx-0"
+                                    />
+                                    <div className="flex-1">
+                                        <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-2 text-center md:text-left">
+                                            {review.text}
+                                        </p>
+                                        <p className="text-gray-500 text-xs sm:text-sm mb-2 text-center md:text-left">
+                                            - {review.person} -
+                                        </p>
 
-                                    <div className="flex gap-1 justify-center sm:justify-start">
-                                        {[1, 2, 3, 4, 5].map(star => (
-                                            <svg
-                                                key={star}
-                                                className={`w-4 h-4 sm:w-5 sm:h-5 ${star <= 3 ? 'text-orange-500 fill-current' : 'text-orange-500'}`}
-                                                viewBox="0 0 24 24"
-                                                fill={star <= 3 ? "currentColor" : "none"}
-                                                stroke="currentColor"
-                                            >
-                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                            </svg>
-                                        ))}
+                                        <div className="flex gap-1 justify-center sm:justify-start">
+                                            {[1, 2, 3, 4, 5].map(star => (
+                                                <svg
+                                                    key={star}
+                                                    className={`w-4 h-4 sm:w-5 sm:h-5 ${star <= 3 ? "text-orange-500 fill-current" : "text-orange-500"}`}
+                                                    viewBox="0 0 24 24"
+                                                    fill={star <= 3 ? "currentColor" : "none"}
+                                                    stroke="currentColor"
+                                                >
+                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                                </svg>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
-                                <img
-                                    src="https://images.unsplash.com/photo-1564490215983-296e5f56b623?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    alt="Client"
-                                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 mx-auto sm:mx-0"
-                                />
-                                <div className="flex-1">
-                                    <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-2">
-                                        Toursurv transformed our workflow with their innovative approach and reliable support. Their team understood our challenges and delivered exactly what we needed.
-                                    </p>
-                                    <p className="text-gray-500 text-xs sm:text-sm mb-2">-Project manager-</p>
-
-                                    <div className="flex gap-1 justify-center sm:justify-start">
-                                        {[1, 2, 3, 4, 5].map(star => (
-                                            <svg
-                                                key={star}
-                                                className={`w-4 h-4 sm:w-5 sm:h-5 ${star <= 3 ? 'text-orange-500 fill-current' : 'text-orange-500'}`}
-                                                viewBox="0 0 24 24"
-                                                fill={star <= 3 ? "currentColor" : "none"}
-                                                stroke="currentColor"
-                                            >
-                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                            </svg>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
-                                <img
-                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-                                    alt="Client"
-                                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 mx-auto sm:mx-0"
-                                />
-                                <div className="flex-1">
-                                    <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-2">
-                                        We’ve partnered with many tech companies, but Toursurv stands out. Their professionalism, fast delivery, and commitment to quality made the entire process effortless.
-                                    </p>
-                                    <p className="text-gray-500 text-xs sm:text-sm mb-2">-Project manager-</p>
-
-                                    <div className="flex gap-1 justify-center sm:justify-start">
-                                        {[1, 2, 3, 4, 5].map(star => (
-                                            <svg
-                                                key={star}
-                                                className={`w-4 h-4 sm:w-5 sm:h-5 ${star <= 3 ? 'text-orange-500 fill-current' : 'text-orange-500'}`}
-                                                viewBox="0 0 24 24"
-                                                fill={star <= 3 ? "currentColor" : "none"}
-                                                stroke="currentColor"
-                                            >
-                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                            </svg>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
 
                             <div className="flex justify-center mt-4 sm:mt-6">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-full flex items-center justify-center">
-                                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
+                                <button
+                                    onClick={() => setShowFirstRev(!showFirstRev)}
+                                    className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-full flex items-center justify-center"
+                                >
+                                    {showFirstRev ? (
+                                        <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    ) : (
+                                        <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                        </svg>
+                                    )}
+                                </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -591,7 +695,7 @@ export default function Hero() {
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#19202C]">GET IN TOUCH</h2>
                     </div>
 
-                    <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 justify-center items-start md:items-stretch">
+                    <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 justify-center items-center md:items-stretch">
                         <div className="flex-1 w-full">
                             <form className="space-y-4 sm:space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
@@ -670,8 +774,10 @@ export default function Hero() {
                             </form>
                         </div>
 
-                        <div className=" w-1/3 mt-8 md:mt-0">
-                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#19202C] mb-4 sm:mb-6">Reach Us</h3>
+                        <div className="w-1/3 mt-8 md:mt-0 text-center md:text-left">
+                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#19202C] mb-4 sm:mb-6">
+                                Reach Us
+                            </h3>
 
                             <div className="space-y-4 sm:space-y-6 text-gray-700">
                                 <div>
@@ -687,10 +793,13 @@ export default function Hero() {
                                 </div>
 
                                 <div>
-                                    <p className="text-base sm:text-lg wrap-break-words">toursurvmarketing@gmail.com</p>
+                                    <p className="text-base sm:text-lg wrap-break-words">
+                                        toursurvmarketing@gmail.com
+                                    </p>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
