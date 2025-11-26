@@ -4,9 +4,7 @@ import hero2 from '../assets/hero2.png';
 import hero3 from '../assets/hero3.png';
 import apsmarks1 from '../assets/apsmarks1.png';
 import apsmarks2 from '../assets/apsmarks2.png';
-import logoInline from '../assets/logo inline.svg';
 import downArrow from '../assets/down-arrow.png';
-import rightArrow from '../assets/left-arrow.png';
 import openArrow from '../assets/open-arrow.png';
 import posImg from '../assets/posImg.png';
 import hireImg from '../assets/hireImg.png';
@@ -23,13 +21,26 @@ import heromq6 from '../assets/heromq6.png';
 import heromq7 from '../assets/heromq7.png';
 import heromq8 from '../assets/heromq8.png';
 import quote1 from '../assets/quote1.png';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
+
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 
 export default function Hero() {
     const scrollRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(1);
     const [showFirstRev, setShowFirstRev] = useState(true);
+    const [formData, setFormData] = useState({
+        name: "",
+        phone: "",
+        email: "",
+        subject: "",
+        message: "",
+    });
+    const [errors, setErrors] = useState({});
+    const [success, setSuccess] = useState(false);
 
     const handleClick = (index) => {
         setActiveIndex(index);
@@ -105,12 +116,12 @@ export default function Hero() {
         {
             text: "Exceptional service and outstanding communication. Toursurv understood our goals and exceeded every one of them.",
             person: "Operations Lead",
-            img: "https://images.unsplash.com/photo-1589571894960-20bbe2828d0a?w=100&h=100&fit=crop&crop=face"
+            img: "https://plus.unsplash.com/premium_photo-1682092039530-584ae1d9da7f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         },
         {
             text: "Reliable, efficient, and highly skilled. Their solutions helped us scale faster than expected.",
             person: "Project manager",
-            img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&fit=crop"
+            img: "https://images.unsplash.com/photo-1530268729831-4b0b9e170218?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         },
         {
             text: "Toursurv’s dedication to quality and customer satisfaction is unmatched. Highly recommended!",
@@ -140,6 +151,57 @@ export default function Hero() {
 
         requestAnimationFrame(step);
     };
+
+    const validate = () => {
+        let newErrors = {};
+
+        if (!formData.name.trim()) newErrors.name = "Name is required";
+
+        if (!formData.phone.trim())
+            newErrors.phone = "Phone number is required";
+        else if (!/^[0-9]{10}$/.test(formData.phone))
+            newErrors.phone = "Enter a valid 10-digit phone number";
+
+        if (!formData.email.trim())
+            newErrors.email = "Email is required";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+            newErrors.email = "Invalid email format";
+
+        if (!formData.subject.trim())
+            newErrors.subject = "Subject is required";
+
+        if (!formData.message.trim())
+            newErrors.message = "Message is required";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (validate()) {
+            setFormData({
+                name: "",
+                phone: "",
+                email: "",
+                subject: "",
+                message: "",
+            });
+
+            setSuccess(true);
+
+            setTimeout(() => setSuccess(false), 2000);
+        }
+    };
+
+    useEffect(() => {
+        AOS.init({ duration: 1000, once: true });
+    }, []);
 
     useEffect(() => {
         animateValue("counter1", 0, 7);
@@ -193,29 +255,7 @@ export default function Hero() {
 
     return (
         <div className="w-full min-h-screen bg-white">
-            <header className="w-full flex items-center justify-between px-4 sm:px-6 md:px-36 py-4 sm:py-6 pb-8 sm:pb-12">
-                <img
-                    src={logoInline}
-                    alt="Logo"
-                    className="h-10 sm:h-12 md:h-14 object-contain"
-                />
-
-                <button
-                    onClick={() =>
-                        document
-                            .getElementById("contact")
-                            .scrollIntoView({ behavior: "smooth" })
-                    }
-                    className="border-2 border-orange-300 rounded-full px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-2 flex items-center gap-2 text-sm sm:text-base md:text-lg bg-white text-gray-800 hover:bg-orange-300 hover:text-white transition font-normal">
-                    <span className="hidden sm:inline">contact us</span>
-                    <span className="sm:hidden">contact</span>
-                    <img
-                        src={rightArrow}
-                        alt="Arrow"
-                        className="w-5 h-3 sm:w-6 sm:h-4"
-                    />
-                </button>
-            </header>
+            <Header />
 
             <section className="relative w-[95%] sm:w-[98%] mx-auto rounded-[60px] mt-2 sm:mt-4">
 
@@ -301,7 +341,8 @@ export default function Hero() {
                 id="whorwe"
                 className="w-full flex md:flex-row items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20">
 
-                <div className="w-full md:w-1/2 space-y-4 sm:space-y-6 flex flex-col items-start justify-start">
+                <div className="w-full md:w-1/2 space-y-4 sm:space-y-6 flex flex-col items-start justify-start"
+                    data-aos="fade-right">
 
                     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-300 leading-tight">Who Are We</h1>
 
@@ -324,7 +365,8 @@ export default function Hero() {
 
                 </div>
 
-                <div className="w-full md:w-1/2 flex items-end justify-center mt-8 sm:mt-10 md:mt-0">
+                <div className="w-full md:w-1/2 flex items-end justify-center mt-8 sm:mt-10 md:mt-0"
+                    data-aos="fade-left">
                     <img
                         src={hero2}
                         alt="Team Illustration"
@@ -335,16 +377,19 @@ export default function Hero() {
 
             <section className="relative w-full flex justify-center -mb-24 sm:-mb-28 md:-mb-32 z-40 px-4 sm:px-6">
                 <div className="bg-white shadow-xl rounded-2xl p-8 md:p-12 max-w-6xl w-full text-center md:text-left relative">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-black">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-black"
+                        data-aos="slide-down">
                         Here is What We Do Our Best
                     </h2>
 
-                    <p className="text-gray-500 mt-3 text-lg max-w-xl mx-auto md:mx-0">
+                    <p className="text-gray-500 mt-3 text-lg max-w-xl mx-auto md:mx-0"
+                        data-aos="slide-down">
                         Enterprise-grade point-of-sale solutions featuring inventory
                         management, sales analytics, and multi-payment integration
                     </p>
 
-                    <div className="hidden lg:flex flex-col absolute right-10 top-10 w-56 md:w-64 items-start gap-1">
+                    <div className="hidden lg:flex flex-col absolute right-10 top-10 w-56 md:w-64 items-start gap-1"
+                        data-aos="slide-up">
                         <img src={quote1} alt="quote" className="w-10 h-10" />
                         <p className="text-black font-semibold text-lg leading-relaxed">
                             Empower your business with Toursurv's expert team we build solutions that drive success.
@@ -455,23 +500,24 @@ export default function Hero() {
                 <div className="absolute top-0 left-0 w-full h-32 sm:h-40 md:h-48 lg:h-64 bg-white rounded-t-[80%]"></div> {/**bg-[#0D1422] */}
                 <div className="bg-white relative w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
 
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111827]">
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111827]"
+                        data-aos="flip-up">
                         <span className="text-orange-500">Trusted</span> Products
                     </h2>
 
-                    <p className="text-black mt-3 max-w-2xl text-base sm:text-lg">
+                    <p className="text-black mt-3 max-w-2xl text-base sm:text-lg"
+                        data-aos="flip-down">
                         Enterprise-grade point-of-sale solutions featuring inventory management,
                         sales analytics, and multi-payment integration
                     </p>
 
-                    <div className="mt-8 sm:mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 
-                gap-x-6 sm:gap-x-8 md:gap-x-12 
-                gap-y-12 sm:gap-y-16 md:gap-y-20">
+                    <div className="mt-8 sm:mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 md:gap-x-12 gap-y-12 sm:gap-y-16 md:gap-y-20">
 
                         {products.map((item, index) => (
                             <div
                                 key={index}
                                 className="border-r-0 sm:border-r border-gray-300 sm:pr-6 last:border-none pb-6 sm:pb-0 border-b sm:border-b-0 last:border-b-0"
+                                data-aos="flip-up"
                             >
                                 <img
                                     src={item.img}
@@ -501,7 +547,8 @@ export default function Hero() {
                 </div>
             </section>
             <section className="bg-white w-full py-10">
-                <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-[#0f233c] mb-4">
+                <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-[#0f233c] mb-4"
+                    data-aos="fade-up">
                     Our Tech Stack
                 </h2>
 
@@ -520,7 +567,8 @@ export default function Hero() {
                     </div>
                 </div>
 
-                <p className="text-center text-gray-600 mt-6 px-6 max-w-3xl mx-auto text-base sm:text-lg">
+                <p className="text-center text-gray-600 mt-6 px-6 max-w-3xl mx-auto text-base sm:text-lg"
+                    data-aos="fade-down">
                     We build powerful, scalable solutions using modern technologies like Python,
                     PHP, Laravel, HTML5, Java, Angular, and Adobe tools ensuring performance,
                     security, and innovation in every project.
@@ -531,15 +579,16 @@ export default function Hero() {
 
                 <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-10 md:gap-12">
 
-                    <div className="flex-1 flex justify-center w-full md:w-auto">
+                    <div className="flex-1 flex justify-center w-full md:w-auto"
+                        data-aos="fade-right">
                         <img src={hero3} alt="Sketch"
                             className="w-full sm:w-[90%] max-w-[500px]" />
                     </div>
 
-                    <div className="flex-1 text-center md:text-left w-full">
+                    <div className="flex-1 text-center md:text-left w-full"
+                        data-aos="fade-left">
                         <h2 className="text-2xl sm:text-3xl md:text-[36px] lg:text-[42px] font-extrabold text-gray-300 leading-snug flex items-center justify-center md:justify-start">
 
-                            {/* Quote image */}
                             <img
                                 src={apsmarks1}
                                 alt="quote"
@@ -571,7 +620,8 @@ export default function Hero() {
 
             </section>
 
-            <section className="relative sm:pt-16 md:pt-24">
+            <section className="relative sm:pt-16 md:pt-24"
+                data-aos="fade-down">
                 <div className="relative mx-auto overflow-hidden">
 
                     <div className="flex items-start justify-start mb-8 sm:mb-10 md:mb-12 px-4 pt-12 gap-6">
@@ -696,80 +746,106 @@ export default function Hero() {
                     </div>
 
                     <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 justify-center items-center md:items-stretch">
-                        <div className="flex-1 w-full">
-                            <form className="space-y-4 sm:space-y-6">
+                        <div className="flex-1 w-full relative">
+                            {/* Success Popup */}
+                            {success && (
+                                <div className="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
+                                    Message sent successfully!
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                                {/* NAME + PHONE */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                     <div>
-                                        <label htmlFor="name" className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
+                                        <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                                             Name
                                         </label>
                                         <input
                                             type="text"
-                                            id="name"
                                             name="name"
-                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
-                                            placeholder=""
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
                                         />
+                                        {errors.name && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                                        )}
                                     </div>
+
                                     <div>
-                                        <label htmlFor="phone" className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
+                                        <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                                             Phone Number
                                         </label>
                                         <input
-                                            type="tel"
-                                            id="phone"
+                                            type="telephone"
                                             name="phone"
-                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
-                                            placeholder=""
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
                                         />
+                                        {errors.phone && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                                        )}
                                     </div>
                                 </div>
 
+                                {/* EMAIL + SUBJECT */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                     <div>
-                                        <label htmlFor="email" className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
+                                        <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                                             E-mail
                                         </label>
                                         <input
                                             type="email"
-                                            id="email"
                                             name="email"
-                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
-                                            placeholder=""
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
                                         />
+                                        {errors.email && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                                        )}
                                     </div>
+
                                     <div>
-                                        <label htmlFor="subject" className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
+                                        <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                                             Subject
                                         </label>
                                         <input
                                             type="text"
-                                            id="subject"
                                             name="subject"
-                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
-                                            placeholder=""
+                                            value={formData.subject}
+                                            onChange={handleChange}
+                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
                                         />
+                                        {errors.subject && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.subject}</p>
+                                        )}
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="message" className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
+                                    <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                                         Message
                                     </label>
                                     <textarea
-                                        id="message"
                                         name="message"
                                         rows="5"
-                                        className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none text-sm sm:text-base"
-                                        placeholder=""
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none text-sm sm:text-base"
                                     ></textarea>
+                                    {errors.message && (
+                                        <p className="text-red-500 text-xs mt-1">{errors.message}</p>
+                                    )}
                                 </div>
 
                                 <button
                                     type="submit"
                                     className="bg-orange-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-base sm:text-lg hover:bg-orange-600 transition w-full sm:w-auto"
                                 >
-                                    send
+                                    Send
                                 </button>
                             </form>
                         </div>
