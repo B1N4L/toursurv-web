@@ -153,6 +153,7 @@ export default function AboutUs() {
                     </div>
                 </div>
             </section>
+            {/** 
             <section className="w-full bg-[#0A1628] py-16 text-white">
                 <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-12"
                     data-aos="flip-down">
@@ -232,9 +233,10 @@ export default function AboutUs() {
                     </div>
                 </div>
             </section>
+            */}
             <section className="w-full bg-white py-24 px-6">
                 <div className="max-w-5xl mx-auto text-center"
-                data-aos="fade-up">
+                    data-aos="fade-up">
 
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-gray-800">
                         {/*style={{ fontFamily: "Anek Odia, Anek" }}*/}
