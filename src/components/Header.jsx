@@ -11,9 +11,9 @@ export default function Header() {
 
   const navItems = [
     { label: "Home", path: "/" },
-    { label: "about us", path: "#" },
-    { label: "what we do", path: "#" },
-    { label: "projects", path: "#" }
+    { label: "About us", path: "/aboutus" },
+    { label: "What we do", path: "/whatwedo" },
+    { label: "Projects", path: "#" }
   ];
 
   return (
@@ -35,8 +35,8 @@ export default function Header() {
               key={index}
               onClick={() => navigate(item.path)}
               className={`transition font-lg ${isActive
-                ? "font-extrabold underline text-black"
-                : "text-gray-700 hover:text-black"
+                ? "font-extrabold text-black"
+                : "text-black hover:text-black"
                 }`}
             >
               {item.label}
@@ -47,9 +47,7 @@ export default function Header() {
 
       <button
         onClick={() =>
-          document
-            .getElementById("contact")
-            .scrollIntoView({ behavior: "smooth" })
+          navigate("/contactus")
         }
         className="border-2 border-orange-300 rounded-full px-4 sm:px-5 md:px-6 
         py-2 sm:py-2.5 md:py-2 hidden lg:flex items-center gap-2 text-sm sm:text-base md:text-lg
@@ -103,7 +101,7 @@ export default function Header() {
 
             <button
               onClick={() => {
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                navigate("/contactus");
                 setMenuOpen(false);
               }}
               className="mt-4 text-2xl text-gray-700 hover:text-black transition animate-slideUpDelay"

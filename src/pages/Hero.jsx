@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import hero0 from '../assets/hero0.png';
 import hero1 from '../assets/hero1.png';
 import hero2 from '../assets/hero2.png';
 import hero3 from '../assets/hero3.png';
@@ -21,6 +22,8 @@ import heromq6 from '../assets/heromq6.png';
 import heromq7 from '../assets/heromq7.png';
 import heromq8 from '../assets/heromq8.png';
 import quote1 from '../assets/quote1.png';
+import imgStrip1 from '../assets/imgStrip1.png';
+import imgStrip2 from '../assets/imgStrip2.png';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -41,6 +44,7 @@ export default function Hero() {
     });
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
 
     const handleClick = (index) => {
         setActiveIndex(index);
@@ -98,17 +102,20 @@ export default function Hero() {
         {
             text: "Working with Toursurv has been a game changer. Their technical expertise, clear communication, and ability to tailor solutions exceeded expectations.",
             person: "Project manager",
-            img: "https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?q=80&w=1506&auto=format&fit=crop"
+            img: "https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?q=80&w=1506&auto=format&fit=crop",
+            stars: 5
         },
         {
             text: "Toursurv transformed our workflow with innovative approaches and reliable support. They delivered exactly what we needed.",
             person: "Tech Lead",
-            img: "https://images.unsplash.com/photo-1564490215983-296e5f56b623?q=80&w=687&auto=format&fit=crop"
+            img: "https://images.unsplash.com/photo-1564490215983-296e5f56b623?q=80&w=687&auto=format&fit=crop",
+            stars: 5
         },
         {
             text: "We’ve partnered with many tech companies, but Toursurv stands out. Their professionalism and fast delivery made everything effortless.",
             person: "CEO",
-            img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+            img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+            stars: 4
         }
     ];
 
@@ -116,17 +123,20 @@ export default function Hero() {
         {
             text: "Exceptional service and outstanding communication. Toursurv understood our goals and exceeded every one of them.",
             person: "Operations Lead",
-            img: "https://plus.unsplash.com/premium_photo-1682092039530-584ae1d9da7f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            img: "https://plus.unsplash.com/premium_photo-1682092039530-584ae1d9da7f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            stars: 3
         },
         {
             text: "Reliable, efficient, and highly skilled. Their solutions helped us scale faster than expected.",
             person: "Project manager",
-            img: "https://images.unsplash.com/photo-1530268729831-4b0b9e170218?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            img: "https://images.unsplash.com/photo-1530268729831-4b0b9e170218?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            stars: 5
         },
         {
             text: "Toursurv’s dedication to quality and customer satisfaction is unmatched. Highly recommended!",
             person: "CEO",
-            img: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=100&fit=crop"
+            img: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=100&fit=crop",
+            stars: 4
         }
     ];
 
@@ -181,22 +191,68 @@ export default function Hero() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (validate()) {
-            setFormData({
-                name: "",
-                phone: "",
-                email: "",
-                subject: "",
-                message: "",
+        if (!validate()) return;
+
+        setSuccess(false);
+        setError(false);
+
+        const form = new FormData();
+        form.append("access_key", "");
+        form.append("name", formData.name);
+        form.append("phone", formData.phone);
+        form.append("email", formData.email);
+        form.append("subject", formData.subject);
+        form.append("message", formData.message);
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: form,
             });
 
-            setSuccess(true);
+            const data = await response.json();
 
-            setTimeout(() => setSuccess(false), 2000);
+            if (data.success) {
+                setSuccess(true);
+
+                setFormData({
+                    name: "",
+                    phone: "",
+                    email: "",
+                    subject: "",
+                    message: "",
+                });
+
+                setTimeout(() => setSuccess(false), 3000);
+            } else {
+                setError(true);
+                setTimeout(() => setError(false), 3000);
+            }
+        } catch (err) {
+            setError(true);
+            setTimeout(() => setError(false), 3000);
         }
+    };
+
+    const handleSub = (e) => {
+        e.preventDefault();
+        if (!validate()) return;
+        setSuccess(false);
+        setError(false);
+
+        setFormData({
+            name: "",
+            phone: "",
+            email: "",
+            subject: "",
+            message: "",
+        });
+
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 3000);
     };
 
     useEffect(() => {
@@ -261,7 +317,7 @@ export default function Hero() {
 
                 <div className="relative w-full">
                     <img
-                        src={hero1}
+                        src={hero0}
                         alt="Hero"
                         className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] object-cover rounded-[60px]" />
                     <div
@@ -339,14 +395,17 @@ export default function Hero() {
             <div className="h-10 sm:h-14 md:h-20 lg:h-28"></div>
             <section
                 id="whorwe"
-                className="w-full flex md:flex-row items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20">
+                className="w-full flex flex-col md:flex-row items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20"
+            >
+                <div
+                    className="w-full md:w-1/2 space-y-4 sm:space-y-6 flex flex-col items-start justify-start"
+                    data-aos="fade-right"
+                >
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-300 leading-tight">
+                        Who Are We
+                    </h1>
 
-                <div className="w-full md:w-1/2 space-y-4 sm:space-y-6 flex flex-col items-start justify-start"
-                    data-aos="fade-right">
-
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-300 leading-tight">Who Are We</h1>
-
-                    <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#19202C] leading-snug">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#19202C] leading-snug">
                         Innovative Global Software Provider <br className="hidden sm:block" />
                         Delivering <span className="text-orange-500"> Creative, Reliable </span>
                         Technological Solutions
@@ -358,15 +417,17 @@ export default function Hero() {
                                 .getElementById("contact")
                                 .scrollIntoView({ behavior: "smooth" })
                         }
-                        className="mt-4 bg-orange-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-orange-600 transition flex items-center gap-2 w-fit text-sm sm:text-base">
+                        className="mt-4 bg-orange-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-orange-600 transition flex items-center gap-2 w-fit text-sm sm:text-base"
+                    >
                         Lets Talk
                         <img src={openArrow} alt="open" className="w-6 h-6" />
                     </button>
-
                 </div>
 
-                <div className="w-full md:w-1/2 flex items-end justify-center mt-8 sm:mt-10 md:mt-0"
-                    data-aos="fade-left">
+                <div
+                    className="w-full md:w-1/2 flex items-end justify-center mt-8 sm:mt-10 md:mt-0"
+                    data-aos="fade-left"
+                >
                     <img
                         src={hero2}
                         alt="Team Illustration"
@@ -374,6 +435,7 @@ export default function Hero() {
                     />
                 </div>
             </section>
+
 
             <section className="relative w-full flex justify-center -mb-24 sm:-mb-28 md:-mb-32 z-40 px-4 sm:px-6">
                 <div className="bg-white shadow-xl rounded-2xl p-8 md:p-12 max-w-6xl w-full text-center md:text-left relative">
@@ -516,7 +578,7 @@ export default function Hero() {
                         {products.map((item, index) => (
                             <div
                                 key={index}
-                                className="border-r-0 sm:border-r border-gray-300 sm:pr-6 last:border-none pb-6 sm:pb-0 border-b sm:border-b-0 last:border-b-0"
+                                className=" border-gray-300 sm:pr-6 last:border-none pb-6 sm:pb-0 border-b sm:border-b-0 last:border-b-0"
                                 data-aos="flip-up"
                             >
                                 <img
@@ -608,30 +670,52 @@ export default function Hero() {
 
 
                 </div>
-
-                <div className="absolute left-1/2 bottom-0 w-[200%] -translate-x-1/2 pointer-events-none hidden md:block">
-
-                    <img src="/assets/ribbon-1.png"
-                        className="absolute bottom-10 w-full rotate-[-8deg]" alt="" />
-
-                    <img src="/assets/ribbon-2.png"
-                        className="absolute -bottom-2 w-full rotate-[5deg] opacity-95" alt="" />
-                </div>
-
             </section>
 
-            <section className="relative sm:pt-16 md:pt-24"
+            <section className="relative overflow-hidden py-10">
+                <div className="hidden md:block pointer-events-none relative h-[300px]">
+
+                    <img
+                        src={imgStrip2}
+                        alt=""
+                        className="absolute bottom-24 left-1/2 -translate-x-1/2 min-w-[120%] w-[120%] rotate-[8deg]"
+                        data-aos="fade-left"
+                    />
+
+                    <img
+                        src={imgStrip1}
+                        alt=""
+                        className="absolute bottom-24 left-1/2 -translate-x-1/2 min-w-[120%] w-[120%] rotate-[-8deg] opacity-95"
+                        data-aos="fade-right"
+                    />
+
+                </div>
+            </section>
+
+            <section className="relative sm:pt-5 md:pt-14"
                 data-aos="fade-down">
                 <div className="relative mx-auto overflow-hidden">
 
-                    <div className="flex items-start justify-start mb-8 sm:mb-10 md:mb-12 px-4 pt-12 gap-6">
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#19202C] mb-3">TESTIMONIALS</h2>
-                        <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#19202C] mb-3">------------</h2>
+                    <div className="flex flex-col md:flex-row items-start justify-start mb-8 sm:mb-10 md:mb-12 px-4">
+                        <h2
+                            className="text-xl sm:text-xl md:text-2xl md:pl-40 font-semibold text-[#19202C] mb-3 mr-3"
+                            style={{ fontFamily: "Roboto Mono, monospace" }}
+                        >
+                            T E S T I M O N I A L S
+                        </h2>
+                        <h2
+                            className="text-lg sm:text-xl md:text-2xl font-semibold text-[#19202C] mb-3"
+                            style={{ fontFamily: "Roboto Mono, monospace" }}
+                        >
+                            ------------
+                        </h2>
                     </div>
+
 
                     <div className="bg-orange-500 px-4 sm:px-6 md:px-12 lg:px-16 flex flex-col md:flex-row">
 
-                        <div className="bg-orange-500 flex-1 flex items-center justify-center p-8 sm:p-10 md:p-12 lg:p-16">
+                        <div className="bg-orange-500 flex-1 flex items-center justify-center p-8 sm:p-10 md:p-12 lg:p-16"
+                            data-aos="fade-down">
                             <div className="text-white text-center md:text-left">
 
                                 <div className="mb-2 sm:mb-4 flex justify-center md:justify-start">
@@ -662,7 +746,8 @@ export default function Hero() {
                         <div className="bg-white flex-1 p-6 sm:p-8 md:p-10 lg:p-12 space-y-6 sm:space-y-8">
 
                             {activeReviews.map((review, index) => (
-                                <div key={index} className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
+                                <div key={index} className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start"
+                                    data-aos="fade-down">
                                     <img
                                         src={review.img}
                                         alt="Client"
@@ -677,12 +762,13 @@ export default function Hero() {
                                         </p>
 
                                         <div className="flex gap-1 justify-center sm:justify-start">
-                                            {[1, 2, 3, 4, 5].map(star => (
+                                            {[1, 2, 3, 4, 5].map((star) => (
                                                 <svg
                                                     key={star}
-                                                    className={`w-4 h-4 sm:w-5 sm:h-5 ${star <= 3 ? "text-orange-500 fill-current" : "text-orange-500"}`}
+                                                    className={`w-4 h-4 sm:w-5 sm:h-5 ${star <= review.stars ? "text-orange-500" : "text-gray-300"
+                                                        }`}
                                                     viewBox="0 0 24 24"
-                                                    fill={star <= 3 ? "currentColor" : "none"}
+                                                    fill={star <= review.stars ? "currentColor" : "none"}
                                                     stroke="currentColor"
                                                 >
                                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -739,7 +825,8 @@ export default function Hero() {
 
             <section
                 id="contact"
-                className="relative bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-16">
+                className="relative bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-16"
+                data-aos="fade-up">
                 <div className="max-w-[1400px] mx-auto">
                     <div className="text-center mb-8 sm:mb-10 md:mb-12">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#19202C]">GET IN TOUCH</h2>
@@ -747,15 +834,18 @@ export default function Hero() {
 
                     <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 justify-center items-center md:items-stretch">
                         <div className="flex-1 w-full relative">
-                            {/* Success Popup */}
                             {success && (
-                                <div className="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
+                                <div className="fixed bottom-5 right-5 bg-orange-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
                                     Message sent successfully!
                                 </div>
                             )}
+                            {error && (
+                                <div className="fixed bottom-5 right-5 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
+                                    Something went wrong! Please try again.
+                                </div>
+                            )}
 
-                            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                                {/* NAME + PHONE */}
+                            <form onSubmit={handleSub} className="space-y-4 sm:space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
@@ -790,7 +880,6 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                {/* EMAIL + SUBJECT */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
@@ -869,7 +958,7 @@ export default function Hero() {
                                 </div>
 
                                 <div>
-                                    <p className="text-base sm:text-lg wrap-break-words">
+                                    <p className="text-base sm:text-lg">
                                         toursurvmarketing@gmail.com
                                     </p>
                                 </div>

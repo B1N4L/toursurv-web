@@ -57,7 +57,7 @@ export default function Footer() {
 
                     <div className="flex items-center gap-4">
                         <a 
-                            href="#" 
+                            href="https://www.facebook.com/share/1CQqadogk6/" 
                             className="w-10 h-10 rounded-full border-2 border-white/30 flex items-center justify-center hover:border-white hover:bg-white/10 transition"
                             aria-label="Facebook"
                         >
@@ -77,7 +77,7 @@ export default function Footer() {
                         </a>
 
                         <a 
-                            href="#" 
+                            href="https://www.linkedin.com/company/toursurv-pvt-ltd/" 
                             className="w-10 h-10 rounded-full border-2 border-white/30 flex items-center justify-center hover:border-white hover:bg-white/10 transition"
                             aria-label="LinkedIn"
                         >
