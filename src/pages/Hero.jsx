@@ -200,7 +200,7 @@ export default function Hero() {
         setError(false);
 
         const form = new FormData();
-        form.append("access_key", "");
+        form.append("access_key", "4abf1f32-f69f-43a4-bcab-74ae074cec08");
         form.append("name", formData.name);
         form.append("phone", formData.phone);
         form.append("email", formData.email);
@@ -845,7 +845,7 @@ export default function Hero() {
                                 </div>
                             )}
 
-                            <form onSubmit={handleSub} className="space-y-4 sm:space-y-6">
+                            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
